@@ -3,11 +3,13 @@ package com.takeNote.feature_note.domain.use_cases
 import com.takeNote.feature_note.domain.models.InvalidNoteException
 import com.takeNote.feature_note.domain.models.Note
 import com.takeNote.feature_note.domain.repository.NoteRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class AddNote @Inject constructor(private val repository: NoteRepository) {
     @Throws(InvalidNoteException::class)
-    suspend operator fun invoke(note: Note) {
+    suspend operator fun invoke(note: Note) = withContext(Dispatchers.IO) {
         if (note.title.isBlank())
             throw InvalidNoteException("The title of note can't be empty!!")
         else if (note.content.isBlank())

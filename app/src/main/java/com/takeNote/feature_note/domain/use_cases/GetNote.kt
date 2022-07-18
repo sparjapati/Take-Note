@@ -4,7 +4,8 @@ import com.takeNote.feature_note.domain.models.Note
 import com.takeNote.feature_note.domain.repository.NoteRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class DeleteNote(private val repository: NoteRepository) {
-    suspend operator fun invoke(note: Note) = withContext(Dispatchers.IO) { repository.deleteNote(note) }
+class GetNote @Inject constructor(private val repository: NoteRepository) {
+    suspend operator fun invoke(id: Int): Note? = withContext(Dispatchers.IO){ repository.getNoteById(id)}
 }

@@ -9,7 +9,7 @@ import javax.inject.Inject
 class NoteRepositoryImpl @Inject constructor(val dao: NoteDao) : NoteRepository {
     override fun getAllNotes(): Flow<List<Note>> = dao.getNotes()
 
-    override suspend fun getNoteById(id: Long): Note? = dao.getNoteById(id)
+    override suspend fun getNoteById(id: Int): Note? = dao.getNoteById(id)
 
     override suspend fun insertNote(note: Note) = dao.insertNote(note)
 

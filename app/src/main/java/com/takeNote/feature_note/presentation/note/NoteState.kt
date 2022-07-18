@@ -7,5 +7,5 @@ import com.takeNote.feature_note.domain.utils.OrderType
 data class NoteState(
     val notes: List<Note> = emptyList(),
     val noteOrder: NoteOrder = NoteOrder.Time(OrderType.Descending),
-    val isOrderSectionVisible:Boolean = false
+    val isOrderSectionVisible: Boolean = true,
 )
