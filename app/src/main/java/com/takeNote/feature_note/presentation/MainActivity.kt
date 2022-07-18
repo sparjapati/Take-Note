@@ -1,4 +1,4 @@
-package com.takeNote
+package com.takeNote.feature_note.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
