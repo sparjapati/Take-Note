@@ -18,5 +18,6 @@ It is a simple note taking app which uses local database to save the notes into 
 - Room
 - Dagger-Hilt
 - Kotlin-Coroutines
+- [Compose-Destinations](https://github.com/raamcosta/compose-destinations)
 
 > Feel Free to use it

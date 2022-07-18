@@ -23,16 +23,19 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.takeNote.feature_note.domain.models.Note
 import com.takeNote.feature_note.presentation.add_edit_note.components.TransparentHintTextField
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@Destination
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun AddEditNoteScreen(
-    navController: NavController,
-    noteColor: Int,
+    navigator: DestinationsNavigator,
+    note: Note? = null,
     vm: AddEditViewModel = hiltViewModel(),
 ) {
     val titleState = vm.titleState.value
@@ -40,7 +43,7 @@ fun AddEditNoteScreen(
     val scaffoldState = rememberScaffoldState()
     val noteBackGroundAnimatable = remember {
         Animatable(
-            Color(if (noteColor != -1) noteColor else vm.colorState.value)
+            Color(vm.colorState.value)
         )
     }
     val scope = rememberCoroutineScope()
@@ -49,7 +52,7 @@ fun AddEditNoteScreen(
         vm.eventFlow.collectLatest { event ->
             when (event) {
                 AddEditViewModel.UiEvent.SaveNote -> {
-                    navController.navigateUp()
+                    navigator.navigateUp()
                 }
                 is AddEditViewModel.UiEvent.ShowSnackBar -> {
                     scaffoldState.snackbarHostState.showSnackbar(event.message)

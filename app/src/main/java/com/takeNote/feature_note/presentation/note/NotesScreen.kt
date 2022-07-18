@@ -16,15 +16,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.takeNote.feature_note.presentation.destinations.AddEditNoteScreenDestination
 import com.takeNote.feature_note.presentation.note.components.NoteItem
 import com.takeNote.feature_note.presentation.note.components.NoteOrderSection
-import com.takeNote.feature_note.presentation.util.Screen
 import kotlinx.coroutines.launch
 
+@RootNavGraph(start = true)
+@Destination
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun NotesScreen(navController: NavController, vm: NoteViewModel = hiltViewModel()) {
+fun NotesScreen(navigator: DestinationsNavigator, vm: NoteViewModel = hiltViewModel()) {
     val state = vm.noteState.value
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
@@ -32,7 +36,7 @@ fun NotesScreen(navController: NavController, vm: NoteViewModel = hiltViewModel(
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { navController.navigate(Screen.AddEditNoteScreen.route) },
+                onClick = { navigator.navigate(AddEditNoteScreenDestination()) },
                 backgroundColor = MaterialTheme.colors.primary
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add Note")
@@ -80,8 +84,7 @@ fun NotesScreen(navController: NavController, vm: NoteViewModel = hiltViewModel(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-                                navController.navigate(Screen.AddEditNoteScreen.route +
-                                        "?noteId=${note.id}&noteColor=${note.color}")
+                                navigator.navigate(AddEditNoteScreenDestination(note))
                             })
                     {
                         vm.onEvent(NoteEvent.DeleteNoteEvent(note))

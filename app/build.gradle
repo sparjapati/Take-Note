@@ -3,6 +3,9 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'kotlin-parcelize'
+    id 'com.google.devtools.ksp' version '1.6.21-1.0.6'
+
 }
 
 android {
@@ -43,6 +46,13 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+    applicationVariants.all { variant ->
+        kotlin.sourceSets {
+            getByName(variant.name) {
+                kotlin.srcDir("build/generated/ksp/${variant.name}/kotlin")
+            }
+        }
+    }
 }
 
 dependencies {
@@ -76,4 +86,7 @@ dependencies {
 
     // Kotlin Extensions and Coroutines support for Room
     implementation "androidx.room:room-ktx:2.4.2"
+
+    implementation 'io.github.raamcosta.compose-destinations:core:1.6.13-beta'
+    ksp 'io.github.raamcosta.compose-destinations:ksp:1.6.13-beta'
 }
