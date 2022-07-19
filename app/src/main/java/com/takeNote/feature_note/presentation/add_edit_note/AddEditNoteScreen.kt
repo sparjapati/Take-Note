@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.takeNote.feature_note.domain.models.Note
@@ -30,12 +29,13 @@ import com.takeNote.feature_note.presentation.add_edit_note.components.Transpare
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-@Destination
+@Destination(
+    navArgsDelegate = AddEditScreenNavArgs::class
+)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun AddEditNoteScreen(
     navigator: DestinationsNavigator,
-    note: Note? = null,
     vm: AddEditViewModel = hiltViewModel(),
 ) {
     val titleState = vm.titleState.value

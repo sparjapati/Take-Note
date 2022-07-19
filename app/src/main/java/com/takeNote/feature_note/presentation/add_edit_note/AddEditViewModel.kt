@@ -11,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.takeNote.feature_note.domain.models.InvalidNoteException
 import com.takeNote.feature_note.domain.models.Note
 import com.takeNote.feature_note.domain.use_cases.NoteUseCases
+import com.takeNote.feature_note.presentation.navArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -22,6 +23,7 @@ class AddEditViewModel @Inject constructor(
     private val noteUseCases: NoteUseCases,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+    private val navArgs: AddEditScreenNavArgs = savedStateHandle.navArgs()
 
     private val _titleState = mutableStateOf(NoteTextFieldState(hint = "Enter title here..."))
     val titleState: State<NoteTextFieldState> = _titleState
@@ -35,11 +37,9 @@ class AddEditViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    private var currentNoteId: Int? = null
 
     init {
-        savedStateHandle.get<Note>("note")?.let { note ->
-            currentNoteId = note.id
+        navArgs.note?.let { note ->
             _titleState.value = titleState.value.copy(text = note.title, isHintVisible = false)
             _contentState.value = contentState.value.copy(text = note.content, isHintVisible = false)
             _colorState.value = note.color
@@ -81,7 +81,7 @@ class AddEditViewModel @Inject constructor(
                                 contentState.value.text,
                                 System.currentTimeMillis(),
                                 colorState.value,
-                                currentNoteId
+                                navArgs.note?.id
                             )
                         )
                         _eventFlow.emit(UiEvent.SaveNote)
